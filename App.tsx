@@ -13,7 +13,7 @@ import { SafeAreaView } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Slider from '@react-native-community/slider';
 
-// TypeScript interface for character data
+
 interface Character {
   id: number;
   name: string;
@@ -51,14 +51,14 @@ export default function App() {
     fetch('https://rickandmortyapi.com/api/character')
       .then(response => response.json())
       .then((json: { results: Character[] }) => {
-        // Mock rating data for demonstration purposes
+    
         const updatedData = json.results.map(character => ({
           ...character,
-          rating: Math.random() * 10, // Replace with actual rating
+          rating: Math.random() * 10, 
         }));
         setData(updatedData);
 
-        // Count status occurrences
+      
         const counts = updatedData.reduce(
           (acc: StatusCounts, character) => {
             acc[character.status.toLowerCase() as keyof StatusCounts] =
