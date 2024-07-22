@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,9 +9,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { SafeAreaView } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import Slider from '@react-native-community/slider';
+import {SafeAreaView} from 'react-native';
 
 
 interface Character {
@@ -26,7 +24,7 @@ interface Character {
   rating: number;
 }
 
-
+// TypeScript interface for status counts
 interface StatusCounts {
   alive: number;
   unknown: number;
@@ -50,22 +48,23 @@ export default function App() {
   useEffect(() => {
     fetch('https://rickandmortyapi.com/api/character')
       .then(response => response.json())
-      .then((json: { results: Character[] }) => {
-    
+      .then((json: {results: Character[]}) => {
+        // Mock rating data for demonstration purposes
         const updatedData = json.results.map(character => ({
           ...character,
-          rating: Math.random() * 10, 
+          rating: Math.random() * 10, // Replace with actual rating
         }));
         setData(updatedData);
 
-      
+        // Count status occurrences
         const counts = updatedData.reduce(
           (acc: StatusCounts, character) => {
             acc[character.status.toLowerCase() as keyof StatusCounts] =
-              (acc[character.status.toLowerCase() as keyof StatusCounts] || 0) + 1;
+              (acc[character.status.toLowerCase() as keyof StatusCounts] || 0) +
+              1;
             return acc;
           },
-          { alive: 0, unknown: 0, dead: 0 }
+          {alive: 0, unknown: 0, dead: 0},
         );
         setStatusCounts(counts);
 
@@ -119,10 +118,12 @@ export default function App() {
 
   const totalCount = Object.values(statusCounts).reduce(
     (acc, count) => acc + count,
-    0
+    0,
   );
   const getRatio = (status: string) =>
-    totalCount > 0 ? (statusCounts[status as keyof StatusCounts] / totalCount) * 100 : 0;
+    totalCount > 0
+      ? (statusCounts[status as keyof StatusCounts] / totalCount) * 100
+      : 0;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -132,7 +133,7 @@ export default function App() {
           <TouchableOpacity
             style={[
               styles.statusCircle,
-              { backgroundColor: statusFilter === 'alive' ? 'green' : '#ddd' },
+              {backgroundColor: statusFilter === 'alive' ? 'green' : '#ddd'},
             ]}
             onPress={() => handleStatusFilter('alive')}
           />
@@ -142,7 +143,7 @@ export default function App() {
           <TouchableOpacity
             style={[
               styles.statusCircle,
-              { backgroundColor: statusFilter === 'unknown' ? 'gray' : '#ddd' },
+              {backgroundColor: statusFilter === 'unknown' ? 'gray' : '#ddd'},
             ]}
             onPress={() => handleStatusFilter('unknown')}
           />
@@ -152,7 +153,7 @@ export default function App() {
           <TouchableOpacity
             style={[
               styles.statusCircle,
-              { backgroundColor: statusFilter === 'dead' ? 'red' : '#ddd' },
+              {backgroundColor: statusFilter === 'dead' ? 'red' : '#ddd'},
             ]}
             onPress={() => handleStatusFilter('dead')}
           />
@@ -177,17 +178,17 @@ export default function App() {
       ) : (
         <FlatList
           data={filteredData}
-          keyExtractor={({ id }) => id.toString()}
-          renderItem={({ item }) => (
+          keyExtractor={({id}) => id.toString()}
+          renderItem={({item}) => (
             <View style={styles.item}>
-              <Image source={{ uri: item.image }} style={styles.avatar} />
+              <Image source={{uri: item.image}} style={styles.avatar} />
               <View style={styles.textContainer}>
                 <Text style={styles.name}>{item.name}</Text>
                 <View style={styles.statusRow}>
                   <View
                     style={[
                       styles.statusCircle,
-                      { backgroundColor: getStatusColor(item.status) },
+                      {backgroundColor: getStatusColor(item.status)},
                     ]}
                   />
                   <Text>Status: {item.status}</Text>
