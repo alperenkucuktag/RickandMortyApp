@@ -26,7 +26,7 @@ interface Character {
   rating: number;
 }
 
-// TypeScript interface for status counts
+
 interface StatusCounts {
   alive: number;
   unknown: number;
